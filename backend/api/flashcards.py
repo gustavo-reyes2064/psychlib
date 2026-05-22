@@ -53,6 +53,8 @@ class ExamRequest(BaseModel):
     topic: str
     count: int = Field(default=10, ge=3, le=30)
     doc_ids: Optional[List[str]] = None
+    page_from: Optional[int] = None
+    page_to: Optional[int] = None
 
 
 # ── Generate Flashcards ─────────────────────────────────────
@@ -87,7 +89,16 @@ def generate_exam(payload: ExamRequest, request: Request):
     from services.claude_service import generate_exam as gen_exam
 
     vs = _vs(request)
-    sources = vs.search(query=payload.topic, top_k=15, doc_ids=payload.doc_ids)
+    top_k = 15
+    if payload.page_from is not None or payload.page_to is not None:
+        top_k = 40
+    sources = vs.search(query=payload.topic, top_k=top_k, doc_ids=payload.doc_ids)
+    if payload.page_from is not None:
+        sources = [s for s in sources if s["page"] >= payload.page_from]
+    if payload.page_to is not None:
+        sources = [s for s in sources if s["page"] <= payload.page_to]
+    if not sources:
+        raise HTTPException(404, "No se encontraron fragmentos en ese rango de páginas. Verifica que el libro esté subido y las páginas sean correctas.")
     chunks_text = "\n\n".join(
         f"[{s['filename']} p.{s['page']}] {s['text']}" for s in sources
     )
