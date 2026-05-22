@@ -98,5 +98,6 @@ def list_modes():
             {"id": "dsm5",         "label": "DSM-5 / CIE-11",    "description": "Criterios diagnósticos precisos"},
             {"id": "farmacologia", "label": "Farmacología",      "description": "Psicofarmacología y mecanismos"},
             {"id": "caso",         "label": "Caso Clínico",      "description": "Análisis de casos clínicos educativos"},
+            {"id": "psicopatologia", "label": "Psicopatología",  "description": "Fenómenos psicopatológicos, semiología y psicopatología descriptiva"},
         ]
     }
