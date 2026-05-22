@@ -9,6 +9,6 @@ python-dotenv==1.0.1
 aiofiles==23.2.1
 pydantic==2.7.1
 httpx==0.27.0
-onnxruntime==1.18.0
-tokenizers>=0.13.2
+onnxruntime
+tokenizers
 chromadb==0.5.23
