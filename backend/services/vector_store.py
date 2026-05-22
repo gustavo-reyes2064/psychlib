@@ -1,5 +1,5 @@
 import chromadb, os
-from chromadb.utils import embedding_functions
+from chromadb.utils.embedding_functions import ONNXMiniLM_L6_V2
 from typing import List, Dict, Any, Optional
 import pathlib
 
@@ -12,9 +12,7 @@ pathlib.Path(CHROMA_DIR).mkdir(parents=True, exist_ok=True)
 class VectorStore:
     def __init__(self):
         self.client = chromadb.PersistentClient(path=CHROMA_DIR)
-        self.ef = embedding_functions.SentenceTransformerEmbeddingFunction(
-            model_name="all-MiniLM-L6-v2"
-        )
+        self.ef = ONNXMiniLM_L6_V2()
         self.collection = self.client.get_or_create_collection(
             name="psychlib_docs",
             embedding_function=self.ef,
